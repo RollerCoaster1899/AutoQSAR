@@ -1,3 +1,5 @@
+### ChemBL Download and Preprocessing
+
 The provided code snippet defines several functions used to download and process data from the ChEMBL database. Here's a breakdown of the process:
 
 **1. Function Definitions:**
@@ -23,4 +25,73 @@ The provided code snippet defines several functions used to download and process
 
 The code defines helper functions for specific tasks like data retrieval, cleaning, and normalization. The `retriving_downloading_cleaning_preprocessing` function serves as the workhorse, handling the entire data download and preprocessing workflow for a single target. Finally, the `download_multiple_targets` function automates the process for a list of targets.
 
-In summary, this code snippet provides a framework to download ChEMBL data for specific targets and assay types, clean and pre-process the data, and store the results in a structured format.
+### Molecule Representation Language
+
+**1. Importing Libraries:**
+
+* `pandas (pd)`: for data manipulation
+* `numpy (np)`: for numerical computations
+* `rdkit`: a cheminformatics library for working with molecules
+* `word2vec`: (optional) for word embedding (if used)
+
+**2. Fingerprint Generation Functions:**
+
+* `generate_morgan_fingerprint`: Takes a molecule SMILES string and generates a Morgan fingerprint, a binary representation of the molecule's structure.
+* `generate_maccs_keys`: Takes a molecule SMILES string and generates MACCS keys, another fingerprint type.
+
+**3. Preprocessing Functions (with fingerprinting):**
+
+* `preprocessing_mf`: Applies the `generate_morgan_fingerprint` function to a DataFrame containing molecule SMILES. It removes rows with missing SMILES and returns a NumPy array of fingerprints.
+* `preprocessing_mk`: Similar to `preprocessing_mf` but uses the `generate_maccs_keys` function for fingerprint generation.
+
+**4. Word Embedding Function (optional):**
+
+* This section includes commented-out functions for generating word embeddings from SMILES strings. It appears to use a pre-trained word2vec model but might not be currently active.
+
+**5. ADME Class:**
+
+* This class defines functions to calculate various properties of a molecule relevant to drug discovery,  including:
+    * Lipinski's rule of five
+    * Egan druglikeness
+    * Ghose druglikeness
+    * Muegge filter
+    * Veber filter
+    * Brenk filter (checks for potentially problematic substructures)
+    * PAINS filter (checks for promiscuous compounds)
+* Additionally, it provides functions to calculate several molecular descriptors like:
+    * Topological polar surface area (TPSA)
+    * LogP (partition coefficient)
+    * Molecular weight
+    * Molar refractivity
+    * Number of atoms, rings, carbons, heteroatoms, and rotatable bonds
+    * Hydrogen bond donors and acceptors
+
+**6. Molecular Descriptor Generation Function:**
+
+* `generate_molecular_descriptors`: Takes a molecule SMILES string, calculates various descriptors using the ADME class, and returns a NumPy array containing these values.
+
+**7. Preprocessing Function (with descriptors):**
+
+* `preprocessing_md`: Applies the `generate_molecular_descriptors` function to a DataFrame containing molecule SMILES. It removes rows with missing SMILES and returns a NumPy array of the calculated descriptors.
+
+### Model Training
+
+The provided code snippet consists of several functions designed for training and evaluating machine learning models for predicting pIC50 values (potency) of chemical compounds. Here's a breakdown of the key parts:
+
+**1. Data Splitting and Cleaning:**
+
+* `splitting_and_post_cleaning`: This function splits the data into training and testing sets (80%/20% by default) and handles potential issues like infinite, negative infinite, or NaN values in the pIC50 labels. It replaces these problematic values with 0 and clips the remaining values to a maximum value.
+
+**2. Model Training and Evaluation:**
+
+* `train_and_evaluate_model`: This function trains a provided machine learning model on the training data and then evaluates its performance on the testing data. It calculates the R-squared (r2), Root Mean Squared Error (RMSE), and Mean Absolute Error (MAE) as evaluation metrics.
+* `train_and_evaluate_model_kfold`: This function performs K-fold cross-validation for a more robust evaluation. It combines the training and testing sets, creates folds using KFold, and trains the model on each fold while evaluating on the remaining folds. It returns the average r2, RMSE, and MAE across all folds.
+
+**3. Training All Models:**
+
+* `train_and_evaluate_all_models`: This function iterates over a list of chemical datasets (defined elsewhere) and trains various machine learning models (KNN, PLS, SVR, etc.) on each dataset. It allows choosing the chemical representation type (e.g., Morgan Fingerprints (mf), ADME descriptors (md), MACCS keys (mk), or Word2vec embeddings (we)) for the training process. For each model-dataset combination, it attempts training and evaluation using K-fold cross-validation. The results (r2, RMSE, MAE) are stored in dictionaries and later converted to DataFrames. Finally, the DataFrames are saved to CSV files for each evaluation metric (r2, rmse, mae) and chosen chemical representation type.
+
+**4. Example Usage:**
+
+The provided comments showcase how to call the `train_and_evaluate_all_models` function with a list of chemical targets (CHEMBL IDs) and the chemical representation type (in this case, "MACCS"). This would train and evaluate all the defined models using MACCS fingerprint representation for each chemical target in the list.
+
