@@ -1,0 +1,9 @@
+chembl_webresource_client
+pandas
+numpy
+rdkit
+mol2vec
+gensim
+matplotlib
+scikit-learn
+xgboost
