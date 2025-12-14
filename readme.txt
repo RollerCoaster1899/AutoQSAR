@@ -61,16 +61,16 @@ QSAR/
 - Standardization: Salt stripping, canonical SMILES, duplicate aggregation.
 - Transformation: pIC50 = -log10(nM).
 
-[ Molecular Representations (15 Types) ]
+[ Molecular Representations (12 Types) ]
 - Fingerprints: ECFP4, ECFP6, MACCS, Avalon, RDKit, AtomPairs, Torsion.
-- Descriptors: RDKit Extended (49), Physicochemical (10), Mordred 2D (1613).
-- Embeddings: Mol2Vec (300-dim Word2Vec), Spectrophore USRCAT.
+- Descriptors: RDKit Extended, Physicochemical, Mordred 2D.
+- Embeddings: Mol2Vec (Word2Vec).
 
 [ Machine Learning Models (16 Algorithms) ]
-- Linear: LinearRegression, Ridge, Lasso, ElasticNet, BayesianRidge.
+- Linear: Ridge, Lasso, ElasticNet, BayesianRidge.
 - SVM: SVR (RBF kernel), SVR (linear kernel).
 - Ensembles: RandomForest, ExtraTrees, HistGradientBoosting, XGBoost.
-- Other: KNN, Gaussian Process, PLS, MLP (Neural Net).
+- Other: KNN, PLS, MLP (Neural Net).
 
 [ Validation Strategy ]
 - Scaffold-based Splitting: Ensures chemically distinct test sets.
