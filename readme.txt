@@ -172,26 +172,3 @@ Analysis Reports
 File: critical_difference.png
 A visual ranking of models. Models connected by a horizontal bar are not 
 statistically different (p > 0.05).
-
-==============================================================================
-8. TROUBLESHOOTING
-==============================================================================
-
-Issue: "MemoryError" with Mordred
-Solution: Mordred calculates 1600+ features. Reduce 'n_cores' in the runner
-configuration or process fewer molecules at a time.
-
-Issue: XGBoost GPU errors
-Solution: Set USE_GPU = False in the configuration.
-
-Issue: "canonical_smiles not found"
-Solution: Ensure your dataset loading function checks for both 
-'canonical_smiles' and 'std_canonical_smiles'.
-
-==============================================================================
-PERFORMANCE ESTIMATES
-==============================================================================
-- Data Download: ~30 mins (one time)
-- Feature Calculation: ~2-4 hours
-- Model Training: ~6-12 hours (depending on CPU cores)
-- Total Storage: ~200MB - 500MB
